@@ -30,8 +30,3 @@ allprojects {
         }
     }
 }
-
-//gradle -q showCurrentTime
-task showCurrentTime {
-    println "This task did something: " + didWork
-}
