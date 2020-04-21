@@ -5,9 +5,9 @@ import java.util.Comparator;
 import java.util.Random;
 
 public class MyArrayListRunner {
-    private static final int NUMBER_OF_GENERATED_ELEMENTS = 10;
+    private static final int NUMBER_OF_ELEMENTS_TO_ADD_INITIAL = 10;
     private static final int MAX_NUMBER_VALUE = 55555;
-    private static final int MAX_LENGTH_ADDALL = 20;
+    private static final int NUMBER_OF_ELEMENTS_TO_ADD = 20;
     private static final Random random = new Random();
 
     private MyArrayList<Integer> myList;
@@ -23,34 +23,28 @@ public class MyArrayListRunner {
     }
 
     private void initList() {
-        myList = new MyArrayList<Integer>();
-        
-        for(int i = 0; i < NUMBER_OF_GENERATED_ELEMENTS; i++) {
-            myList.add(getRandomInteger());
-        }
-
-        System.out.println("List initiated with " + NUMBER_OF_GENERATED_ELEMENTS + " random numbers:");
+        myList = createListWithRandomIntegers(NUMBER_OF_ELEMENTS_TO_ADD_INITIAL);
+        System.out.println("List initiated with " + NUMBER_OF_ELEMENTS_TO_ADD_INITIAL + " random numbers:");
         myList.printList();
     }
 
     private void runCollectionAddAll() {
-    	Integer[] elementsToAdd = new Integer[MAX_LENGTH_ADDALL];
+    	Integer[] elementsToAdd = new Integer[NUMBER_OF_ELEMENTS_TO_ADD];
 
-    	for(int i = 0; i < MAX_LENGTH_ADDALL; i++) {
+    	for(int i = 0; i < NUMBER_OF_ELEMENTS_TO_ADD; i++) {
             elementsToAdd[i] = getRandomInteger();
         }
 
-        System.out.println("Adding " + MAX_LENGTH_ADDALL + " random numbers..");
+        System.out.println("Adding " + NUMBER_OF_ELEMENTS_TO_ADD + " random numbers..");
         Collections.addAll(myList, elementsToAdd);
 
         myList.printList();
     }
 
     private void runCollectionCopy() {
-    	var myListCopy = new MyArrayList<Integer>();
-    	myListCopy.growToSize(myList.size());
+    	MyArrayList<Integer> myListCopy = createListWithRandomIntegers(NUMBER_OF_ELEMENTS_TO_ADD_INITIAL + NUMBER_OF_ELEMENTS_TO_ADD);
         Collections.copy(myListCopy, myList);
-        System.out.println("copy of myList content:");
+        System.out.println("copy of myArrayList content:");
         myListCopy.printList();
     }
 
@@ -65,6 +59,16 @@ public class MyArrayListRunner {
         Collections.sort(myList, integerOrderingComparator);
         System.out.println("sorted myList:");
         myList.printList();
+    }
+
+    private MyArrayList<Integer> createListWithRandomIntegers(int numberOfElements) {
+        MyArrayList<Integer> myList = new MyArrayList<Integer>();
+        
+        for(int i = 0; i < numberOfElements; i++) {
+            myList.add(getRandomInteger());
+        }
+
+        return myList;
     }
 
 

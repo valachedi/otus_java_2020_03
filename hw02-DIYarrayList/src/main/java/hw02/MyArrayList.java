@@ -12,11 +12,11 @@ import java.util.ListIterator;
 public class MyArrayList<T> implements List<T> {
     private static final int INITIAL_CAPACITY = 30;
 
-    private Object[] _array;
+    private Object[] innerArray;
     private int numberOfElements = 0;
 
     public MyArrayList() {
-        _array = new Object[INITIAL_CAPACITY];
+        innerArray = new Object[INITIAL_CAPACITY];
     }
 
     public T set(int index, T element) {
@@ -24,8 +24,8 @@ public class MyArrayList<T> implements List<T> {
             throw new IndexOutOfBoundsException();
         }
 
-        T prevValue = (T)_array[index];
-        _array[index] = element;
+        T prevValue = (T)innerArray[index];
+        innerArray[index] = element;
 
         return prevValue;
     }
@@ -35,7 +35,7 @@ public class MyArrayList<T> implements List<T> {
             throw new IndexOutOfBoundsException();
         }
 
-        return (T)_array[index];
+        return (T)innerArray[index];
     }
 
     public boolean add(T e) {
@@ -43,13 +43,13 @@ public class MyArrayList<T> implements List<T> {
             grow();
         }
 
-        _array[numberOfElements++] = e;
+        innerArray[numberOfElements++] = e;
 
         return true;
     }
 
     public Object[] toArray() {
-        return Arrays.copyOf(_array, size());
+        return Arrays.copyOf(innerArray, size());
     }
 
     public Iterator<T> iterator() {
@@ -57,15 +57,15 @@ public class MyArrayList<T> implements List<T> {
     }
 
     public boolean isEmpty() {
-        return _array.length == 0;
+        return numberOfElements == 0;
     }
 
     public int size() {
-        return _array.length;
+        return numberOfElements;
     }
 
     public void printList() {
-        for(int i = 0; i < size(); i++) {
+        for(int i = 0; i < numberOfElements; i++) {
             if(i != 0) {
                 System.out.print(",");
             }
@@ -76,15 +76,19 @@ public class MyArrayList<T> implements List<T> {
         System.out.println();
     }
 
-    public void growToSize(int requiredSize) {
-        if(requiredSize > size()) {
-            _array = Arrays.copyOf(_array, requiredSize);
+    private void growToSize(int requiredSize) {
+        if(requiredSize > numberOfElements) {
+            if(requiredSize > innerArray.length) {
+                innerArray = Arrays.copyOf(innerArray, requiredSize);
+            }
+
+            numberOfElements = requiredSize;
         }
     }
 
     @Override
     public void sort(Comparator<? super T> c) {
-        Arrays.sort((T[])_array, c);
+        Arrays.sort((T[])innerArray, c);
     }
 
     public ListIterator<T> listIterator() {
@@ -92,84 +96,71 @@ public class MyArrayList<T> implements List<T> {
     }
 
     public MyArrayList<T> subList(int from, int to) {
-        throwMethodIsNotImplemented();
-        return null;
+        throw new UnsupportedOperationException("method not implemented");
     }
 
     public ListIterator<T> listIterator(int index) {
-        throwMethodIsNotImplemented();
-        return null;
+        throw new UnsupportedOperationException("method not implemented");
     }
 
     public int indexOf(Object o) {
-        throwMethodIsNotImplemented();
-        return 0;
+        throw new UnsupportedOperationException("method not implemented");
     }
 
     public boolean retainAll(Collection<?> c) {
-        throwMethodIsNotImplemented();
-        return false;
+        throw new UnsupportedOperationException("method not implemented");
     }
 
     public boolean removeAll(Collection<?> c) {
-        throwMethodIsNotImplemented();
-        return false;
+        throw new UnsupportedOperationException("method not implemented");
     }
 
     public boolean addAll(Collection<? extends T> c) {
-        throwMethodIsNotImplemented();
-        return false;
+        throw new UnsupportedOperationException("method not implemented");
     }
 
     public boolean addAll(int index, Collection<? extends T> c) {
-        throwMethodIsNotImplemented();
-        return false;
+        throw new UnsupportedOperationException("method not implemented");
     }
 
     public boolean containsAll(Collection<?> c) {
-        throwMethodIsNotImplemented();
-        return false;
+        throw new UnsupportedOperationException("method not implemented");
     }
 
     public boolean remove(Object o) {
-        throwMethodIsNotImplemented();
-        return false;
+        throw new UnsupportedOperationException("method not implemented");
     }
 
     public int lastIndexOf(Object o) {
-        throwMethodIsNotImplemented();
-        return 0;
+        throw new UnsupportedOperationException("method not implemented");
     }
 
     public T remove(int index) {
-        throwMethodIsNotImplemented();
-        return null;
+        throw new UnsupportedOperationException("method not implemented");
     }
 
     public void add(int index, T element) {
-        throwMethodIsNotImplemented();
+        throw new UnsupportedOperationException("method not implemented");
     }
 
     public void clear() {
-        throwMethodIsNotImplemented();
+        throw new UnsupportedOperationException("method not implemented");
     }
 
     public <T> T[] toArray(T[] a) {
-        throwMethodIsNotImplemented();
-        return null;
+        throw new UnsupportedOperationException("method not implemented");
     }
 
     public boolean contains(Object o) {
-        throwMethodIsNotImplemented();
-        return false;
+        throw new UnsupportedOperationException("method not implemented");
     }
 
     private boolean isFull() {
-        return numberOfElements == _array.length;
+        return numberOfElements == innerArray.length;
     }
 
     private void grow() {
-        var newCapacityDoubled = _array.length * 2;
+        var newCapacityDoubled = innerArray.length * 2;
         growToSize(newCapacityDoubled);
     }
 
@@ -221,10 +212,5 @@ public class MyArrayList<T> implements List<T> {
         public void remove() {
             MyArrayList.this.remove(cursor);
         }
-    }
-
-    private void throwMethodIsNotImplemented()
-    {
-        throw new UnsupportedOperationException("method not implemented");
     }
 }
