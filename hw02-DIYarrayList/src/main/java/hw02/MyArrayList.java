@@ -81,8 +81,6 @@ public class MyArrayList<T> implements List<T> {
             if(requiredSize > innerArray.length) {
                 innerArray = Arrays.copyOf(innerArray, requiredSize);
             }
-
-            numberOfElements = requiredSize;
         }
     }
 
