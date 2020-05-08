@@ -3,3 +3,4 @@
 rootProject.name = 'otusJava'
 include 'hw01-gradle'
 include 'hw02-DIYarrayList'
+include 'hw03-annotations'
