@@ -1,6 +1,7 @@
 package hw04;
 
 import com.sun.management.GarbageCollectionNotificationInfo;
+import java.lang.OutOfMemoryError;
 import java.lang.management.GarbageCollectorMXBean;
 import java.lang.management.ManagementFactory;
 import javax.management.MBeanServer;
@@ -13,23 +14,31 @@ import java.util.List;
 import hw04.components.BenchmarkOverfillMemory;
 
 public class Main {
+  private static final String BEAN_REG_NAME = "hw04-gc:type=BenchmarkOverfillMemory";
   private static final String GC_PARALLEL_BEAN_NAME_MINOR = "PS Scavenge";
   private static final String GC_PARALLEL_BEAN_NAME_MAJOR = "PS MarkSweep";
   private static final String GC_G1_BEAN_NAME_MINOR = "G1 Young Generation";
   private static final String GC_G1_BEAN_NAME_MAJOR = "G1 Old Generation";
-
   private static final int METRIC_PERIOD_SNAP_SECONDS = 60;
 
   public static void main(String ...args) throws Exception {
+    int msOfStart = (int)System.currentTimeMillis();
     switchOnMonitoring();
     long beginTime = System.currentTimeMillis();
 
     MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
-    ObjectName name = new ObjectName("hw04-gc:type=BenchmarkOverfillMemory");
+    ObjectName name = new ObjectName(BEAN_REG_NAME);
 
     BenchmarkOverfillMemory mbean = new BenchmarkOverfillMemory();
     mbs.registerMBean(mbean, name);
-    mbean.run();
+
+    try {
+      mbean.run();
+    }
+    catch(OutOfMemoryError e) {
+      System.out.println("total execution time: " + (((int)System.currentTimeMillis() - msOfStart) / 1000) + " seconds");
+      throw e;
+    }
 
     System.out.println("time:" + (System.currentTimeMillis() - beginTime) / 1000);
   }

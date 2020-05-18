@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class BenchmarkOverfillMemory implements BenchmarkOverfillMemoryMBean {
   private static final int INITITAL_ELEMENTS_TO_ADD = 100000;
+  private static final int ITERATION_DELAY_SECONDS = 10;
   private static final int LIMIN_ITERATIONS = 100000;
   private static final int MIN_NUMBER_OF_ELEMENTS = 1;
 
@@ -40,7 +41,7 @@ public class BenchmarkOverfillMemory implements BenchmarkOverfillMemoryMBean {
       }
       list.trimToSize();
 
-      Thread.sleep(10);
+      Thread.sleep(ITERATION_DELAY_SECONDS);
     }
   }
 }
