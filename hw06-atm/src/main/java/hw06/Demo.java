@@ -5,6 +5,10 @@ import hw06.models.AtmFactory;
 import hw06.models.interfaces.CashCustomerInterface;
 import hw06.models.interfaces.MoneyStorageInterface;
 
+import java.util.ArrayList;
+import hw06.models.Atm;
+import hw06.models.NotesBank;
+
 public class Demo {
   MoneyStorageInterface storage;
   CashCustomerInterface cashCustomer;

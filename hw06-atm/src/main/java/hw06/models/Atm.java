@@ -1,15 +1,16 @@
 package hw06.models;
 
 import java.util.ArrayList;
+import java.util.List;
 import hw06.components.ParDictionary;
 import hw06.components.ParValidator;
 import hw06.models.interfaces.MoneyStorageInterface;
 
 public class Atm implements MoneyStorageInterface {
-  private ArrayList<NotesBank> notesBanks;
+  private final List<NotesBank> notesBanks;
 
-  public Atm(ArrayList<NotesBank> notesBanks) {
-    this.notesBanks = notesBanks;
+  public Atm(List<NotesBank> notesBanks) {
+    this.notesBanks = new ArrayList<NotesBank>(notesBanks);
   }
 
   public void releaseMoney(int sum) throws Exception {
@@ -29,10 +30,10 @@ public class Atm implements MoneyStorageInterface {
   }
 
   public int getRemain() {
-    return this.notesBanks.stream()
+    return notesBanks.stream()
                 .mapToInt(notesBank -> notesBank.getSum())
                 .reduce((sum1,sum2) -> sum1 + sum2)
-                .getAsInt();
+                .orElse(0);
   }
 
   public void addMoneyItemByPar(int par) throws Exception {
@@ -47,7 +48,16 @@ public class Atm implements MoneyStorageInterface {
   }
 
   private void validateSumRequested(int sum) throws Exception {
-    if(sum % 100 != 0) {
+    boolean hasBankWithNeededPars = false;
+
+    for(var notesBank : notesBanks) {
+      if(sum % notesBank.getPar() != 0) {
+        hasBankWithNeededPars = true;
+        break;
+      }
+    }
+
+    if(!hasBankWithNeededPars) {
       throw new Exception("bad sum requested ("+sum+")");
     }
 
