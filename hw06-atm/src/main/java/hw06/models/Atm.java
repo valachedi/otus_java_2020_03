@@ -7,10 +7,14 @@ import hw06.components.ParValidator;
 import hw06.models.interfaces.MoneyStorageInterface;
 
 public class Atm implements MoneyStorageInterface {
-  private final List<NotesBank> notesBanks;
+  protected final List<NotesBank> notesBanks;
 
   public Atm(List<NotesBank> notesBanks) {
     this.notesBanks = new ArrayList<NotesBank>(notesBanks);
+  }
+
+  public List<NotesBank> getNotesBanks() {
+    return new ArrayList<NotesBank>(notesBanks);
   }
 
   public void releaseMoney(int sum) throws Exception {
@@ -51,7 +55,7 @@ public class Atm implements MoneyStorageInterface {
     boolean hasBankWithNeededPars = false;
 
     for(var notesBank : notesBanks) {
-      if(sum % notesBank.getPar() != 0) {
+      if(sum % notesBank.getPar() == 0) {
         hasBankWithNeededPars = true;
         break;
       }
