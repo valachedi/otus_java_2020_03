@@ -2,14 +2,12 @@ package hw06.models;
 
 import java.lang.Math;
 import java.util.Arrays;
-import hw06.components.ParValidator;
 
 public class NotesBank {
   private int amount;
   private int par;
 
-  public NotesBank(int amount, int par) throws Exception {
-    ParValidator.checkPar(par);
+  public NotesBank(int amount, int par) {
     this.amount = amount;
     this.par = par;
   }
@@ -34,6 +32,10 @@ public class NotesBank {
     int releasableAmount = getReleasableAmountBySum(sum);
     amount -= releasableAmount;
     return par * releasableAmount;
+  }
+
+  public NotesBank clone() {
+    return new NotesBank(amount, par);
   }
 
   private int getReleasableAmountBySum(int sum) {
