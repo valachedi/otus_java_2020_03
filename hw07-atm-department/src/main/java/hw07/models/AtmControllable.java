@@ -1,7 +1,6 @@
 package hw07.models;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import hw06.models.Atm;
