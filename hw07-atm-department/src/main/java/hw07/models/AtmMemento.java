@@ -2,7 +2,7 @@ package hw07.models;
 
 import java.util.ArrayList;
 import java.util.List;
-import hw06.models.NotesBank;
+import hw07.models.NotesBank;
 
 public class AtmMemento {
   private List<NotesBank> notesBanksState;

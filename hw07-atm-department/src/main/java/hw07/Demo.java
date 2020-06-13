@@ -1,9 +1,9 @@
 package hw07;
 
-import hw06.models.AtmFactory;
-import hw07.models.interfaces.observer.MoneyStorageObservableInterface;
 import hw07.models.AtmControllable;
 import hw07.models.AtmDepartment;
+import hw07.models.AtmFactory;
+import hw07.models.interfaces.observer.MoneyStorageObservableInterface;
 
 public class Demo {
   private static final int NUMBER_OF_DEPARTMENT_UNITS = 9;
