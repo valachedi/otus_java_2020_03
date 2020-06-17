@@ -26,13 +26,13 @@ public class AtmControllable extends Atm implements MoneyStorageObservableInterf
   }
 
   @Override
-  public void releaseMoney(int sum) throws Exception {
+  public void releaseMoney(int sum) {
     super.releaseMoney(sum);
     onWithdraw(sum);
   }
 
   @Override
-  public void addMoneyItemByPar(int par) throws Exception {
+  public void addMoneyItemByPar(int par) {
     super.addMoneyItemByPar(par);
     onDeposit(par);
   }

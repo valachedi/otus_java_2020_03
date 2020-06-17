@@ -11,11 +11,11 @@ public class Demo {
 
   AtmDepartment atmDepartment;
 
-  public Demo() throws Exception {
+  public Demo() {
     initiateAtmDepartment();
   }
 
-  public void run() throws Exception {
+  public void run() {
     var atm = atmDepartment.getStorageByIndex(TEST_STORAGE_INDEX);
     System.out.println("initial atm " + atm + " sum: " + atm.getRemain());
     var atmInitialState = atm.saveState();
@@ -31,7 +31,7 @@ public class Demo {
     System.out.println("atm " + atm + " sum remain: " + atm.getRemain());
   }
 
-  private void initiateAtmDepartment() throws Exception {
+  private void initiateAtmDepartment() {
     atmDepartment = new AtmDepartment();
 
     for(int i = 0; i < NUMBER_OF_DEPARTMENT_UNITS; i++) {
@@ -39,7 +39,7 @@ public class Demo {
     }
   }
 
-  private MoneyStorageObservableInterface generateNewStorageItem() throws Exception {
+  private MoneyStorageObservableInterface generateNewStorageItem() {
     return new AtmControllable(AtmFactory.createAtmWithRandomNoteBanksContent());
   }
 }

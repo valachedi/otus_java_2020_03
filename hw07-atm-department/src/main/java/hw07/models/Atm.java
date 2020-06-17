@@ -19,7 +19,8 @@ public class Atm implements MoneyStorageInterface {
     return copy;
   }
 
-  public void releaseMoney(int sum) throws Exception {
+  @Override
+  public void releaseMoney(int sum) {
     validateSumRequested(sum);
 
     if(getIsReleasableSum(sum)) {
@@ -31,10 +32,11 @@ public class Atm implements MoneyStorageInterface {
         }
       }
     } else {
-      throw new Exception("Cannot release such sum ("+sum+")");
+      throw new RuntimeException("Cannot release such sum ("+sum+")");
     }
   }
 
+  @Override
   public int getRemain() {
     return notesBanks.stream()
                 .mapToInt(notesBank -> notesBank.getSum())
@@ -42,35 +44,36 @@ public class Atm implements MoneyStorageInterface {
                 .orElse(0);
   }
 
-  public void addMoneyItemByPar(int par) throws Exception {
+  @Override
+  public void addMoneyItemByPar(int par) {
     ParValidator.checkPar(par);
     var notesBank = getNotesBankByPar(par);
 
     if(notesBank == null) {
-      throw new Exception("failed to access bank of par " + par);
+      throw new RuntimeException("failed to access bank of par " + par);
     }
 
     notesBank.increaseAmount();
   }
 
-  private void validateSumRequested(int sum) throws Exception {
+  private void validateSumRequested(int sum) {
     boolean hasBankWithNeededPars = false;
 
     for(var notesBank : notesBanks) {
-      if(sum % notesBank.getPar() == 0) {
+      if(sum % notesBank.getPar().getValue() == 0) {
         hasBankWithNeededPars = true;
         break;
       }
     }
 
     if(!hasBankWithNeededPars) {
-      throw new Exception("bad sum requested ("+sum+")");
+      throw new RuntimeException("bad sum requested ("+sum+")");
     }
 
     int remain = getRemain();
 
     if(sum > remain) {
-      throw new Exception("Cannot release "+sum+", only "+remain+" remain");
+      throw new RuntimeException("Cannot release "+sum+", only "+remain+" remain");
     }
   }
 
@@ -88,7 +91,7 @@ public class Atm implements MoneyStorageInterface {
 
   private NotesBank getNotesBankByPar(int par) {
     return notesBanks.stream()
-            .filter(notesBank -> notesBank.getPar() == par)
+            .filter(notesBank -> notesBank.getPar().getValue() == par)
             .findFirst()
             .orElse(null);
   }

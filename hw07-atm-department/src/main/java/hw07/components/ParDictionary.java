@@ -8,7 +8,7 @@ import java.util.TreeSet;
 public class ParDictionary {
   private static TreeSet<Integer> parsList;
 
-  private enum ValidPar {
+  public static enum ValidPar {
     Par100(100),
     Par500(500),
     Par1000(1000),
@@ -18,11 +18,24 @@ public class ParDictionary {
     private final int value;
 
     ValidPar(final int newValue) {
-        value = newValue;
+      value = newValue;
     }
 
-    public int getValue() { return value; }
-  };
+    public int getValue() {
+      return value;
+    }
+
+    public static ValidPar getByPar(int par)
+    {
+        for(ValidPar eachPar: values()) {
+          if (eachPar.getValue() == par) {
+            return eachPar;
+          }
+        }
+
+        return null;
+    }
+  }
 
   public static TreeSet<Integer> getParsList() {
     if(parsList == null) {

@@ -1,11 +1,11 @@
 package hw07.components;
 
 public class ParValidator {
-  public static void checkPar(int par) throws Exception {
-    boolean isValidPar = ParDictionary.getParsList().contains(par);
+  public static void checkPar(int par) {
+    boolean isValidPar = ParDictionary.ValidPar.getByPar(par) != null;
 
     if(!isValidPar) {
-      throw new Exception("Invalid par: " + par);
+      throw new RuntimeException("Invalid par: " + par);
     }
   }
 }

@@ -1,7 +1,7 @@
 package hw07.models.interfaces;
 
 public interface MoneyStorageInterface {
-  void addMoneyItemByPar(int par) throws Exception;
-  void releaseMoney(int sum) throws Exception;
+  void addMoneyItemByPar(int par);
+  void releaseMoney(int sum);
   int getRemain();
 }
