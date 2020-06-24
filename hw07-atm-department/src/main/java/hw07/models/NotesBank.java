@@ -1,23 +1,25 @@
-package hw06.models;
+package hw07.models;
 
+import java.lang.Cloneable;
 import java.lang.Math;
 import java.util.Arrays;
+import hw07.components.ParDictionary.ValidPar;
 
-public class NotesBank {
+public class NotesBank implements Cloneable {
   private int amount;
-  private int par;
+  private final ValidPar par;
 
-  public NotesBank(int amount, int par) {
+  public NotesBank(int amount, ValidPar par) {
     this.amount = amount;
     this.par = par;
   }
 
-  public int getPar() {
+  public ValidPar getPar() {
     return par;
   }
 
   public int getSum() {
-    return this.amount * this.par;
+    return this.amount * this.par.getValue();
   }
 
   public void increaseAmount() {
@@ -25,13 +27,13 @@ public class NotesBank {
   }
 
   public int getMaxAvailableForReleaseSum(int sum) {
-    return par * getReleasableAmountBySum(sum);
+    return par.getValue() * getReleasableAmountBySum(sum);
   }
 
   public int releaseMaxAvailableSum(int sum) {
     int releasableAmount = getReleasableAmountBySum(sum);
     amount -= releasableAmount;
-    return par * releasableAmount;
+    return par.getValue() * releasableAmount;
   }
 
   public NotesBank clone() {
@@ -39,7 +41,7 @@ public class NotesBank {
   }
 
   private int getReleasableAmountBySum(int sum) {
-    int parsRequired = (int)Math.floor(sum / par);
+    int parsRequired = (int)Math.floor(sum / par.getValue());
     return Math.min(parsRequired, amount);
   }
 }
