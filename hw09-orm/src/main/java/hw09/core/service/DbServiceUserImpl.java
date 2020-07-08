@@ -1,11 +1,11 @@
 package hw09.core.service;
 
 import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import hw09.core.dao.UserDao;
 import hw09.core.model.User;
-import hw09.jdbc.mapper.JdbcMapperImpl;
 
 public class DbServiceUserImpl implements DBServiceUser {
     private static final Logger logger = LoggerFactory.getLogger(DbServiceUserImpl.class);
@@ -13,25 +13,25 @@ public class DbServiceUserImpl implements DBServiceUser {
     private final UserDao userDao;
 
     public DbServiceUserImpl(UserDao userDao) {
-      this.userDao = userDao;
+        this.userDao = userDao;
     }
 
     @Override
     public int save(User user) {
-      try (var sessionManager = userDao.getSessionManager()) {
-        sessionManager.beginSession();
+        try (var sessionManager = userDao.getSessionManager()) {
+            sessionManager.beginSession();
 
-        try {
-            int id = userDao.insertOrUpdate(user);
-            sessionManager.commitSession();
-            logger.info("affected row: {}", id);
-            return id;
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-            sessionManager.rollbackSession();
-            throw new DbServiceException(e);
+            try {
+                int id = userDao.insertOrUpdate(user);
+                sessionManager.commitSession();
+                logger.info("affected row: {}", id);
+                return id;
+            } catch (Exception e) {
+                logger.error(e.getMessage(), e);
+                sessionManager.rollbackSession();
+                throw new DbServiceException(e);
+            }
         }
-      }
     }
 
     @Override

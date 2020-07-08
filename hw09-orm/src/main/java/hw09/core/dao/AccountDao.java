@@ -7,8 +7,12 @@ import hw09.core.sessionmanager.SessionManager;
 
 public interface AccountDao {
     Optional<Account> findByNo(int no);
+
     int insert(Account account);
+
     int update(Account account);
+
     int insertOrUpdate(Account account);
+
     SessionManager getSessionManager();
 }
