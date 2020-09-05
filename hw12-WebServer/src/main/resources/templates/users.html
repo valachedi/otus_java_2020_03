@@ -24,7 +24,7 @@
         }
 
         function createUser() {
-            const RELOAD_DELAY = 3000;
+            const RELOAD_DELAY = 1500;
 
             fetch('api/user', {
                 method: 'POST',
@@ -56,43 +56,41 @@
 <button onclick="getUserById()">Получить</button>
 <pre id = "userDataContainer"></pre>
 
-<h4>Последний зарегистрированный пользователь</h4>
-<#if lastUser??>
-    <table border="1" style="width: 600px">
-        <thead>
-            <tr>
-                <th style="width: 150px">Имя</th>
-                <th style="width: 100px">Возраст</th>
-                <th style="width: 100px">Адрес</th>
-                <th style="width: 100px">Телефоны</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>${lastUser.name}</td>
-                <td>${lastUser.age}</td>
-                <td>
-                    <#if lastUser.address??>
-                        ${lastUser.address.street}
-                    <#else>
-                        <i>не указан</i>
-                    </#if>
-                </td>
-                <td>
-                    <#if lastUser.phones??>
-                        <#list lastUser.phones as phone>
-                            <p>${phone.number}</p>
-                        </#list>
-                    <#else>
-                        <i>Не указан</i>
-                    </#if>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-<#else>
-    Случайный пользователь не найден
-</#if>
+<h4>Список пользователей</h4>
+<table border="1" style="width: 600px">
+    <thead>
+        <tr>
+            <th style="width: 150px">Имя</th>
+            <th style="width: 100px">Возраст</th>
+            <th style="width: 100px">Адрес</th>
+            <th style="width: 100px">Телефоны</th>
+        </tr>
+    </thead>
+    <tbody>
+    <#list users as eachUser>
+        <tr>
+            <td>${eachUser.name}</td>
+            <td>${eachUser.age}</td>
+            <td>
+                <#if eachUser.address??>
+                    ${eachUser.address.street}
+                <#else>
+                    <i>не указан</i>
+                </#if>
+            </td>
+            <td>
+                <#if eachUser.phones??>
+                    <#list eachUser.phones as phone>
+                        <p>${phone.number}</p>
+                    </#list>
+                <#else>
+                    <i>Не указан</i>
+                </#if>
+            </td>
+        </tr>
+    </#list>
+    </tbody>
+</table>
 
 <hr>
 

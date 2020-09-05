@@ -5,6 +5,8 @@ import com.google.gson.annotations.SerializedName;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 @Entity
 @Table(name = "user")
@@ -37,6 +39,7 @@ public class User {
     private Address address;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @Fetch(FetchMode.SELECT)
     private List<Phone> phones = new ArrayList<Phone>(1);
 
     public User() {

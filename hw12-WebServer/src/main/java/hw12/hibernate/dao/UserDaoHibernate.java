@@ -1,6 +1,6 @@
 package hw12.hibernate.dao;
 
-
+import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -25,6 +25,18 @@ public class UserDaoHibernate implements UserDao {
         this.sessionManager = sessionManager;
     }
 
+    @Override
+    public List<User> findAll() {
+        DatabaseSessionHibernate currentSession = sessionManager.getCurrentSession();
+
+        try {
+            return currentSession.getHibernateSession().createCriteria(User.class).list();
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+        }
+
+        return null;
+    }
 
     @Override
     public Optional<User> findById(long id) {
@@ -38,7 +50,6 @@ public class UserDaoHibernate implements UserDao {
 
         return Optional.empty();
     }
-
 
     @Override
     public Optional<User> findByLogin(String login) {
@@ -54,7 +65,6 @@ public class UserDaoHibernate implements UserDao {
 
         return Optional.empty();
     }
-
 
     @Override
     public Optional<User> findLastUser() {
@@ -114,7 +124,6 @@ public class UserDaoHibernate implements UserDao {
             throw new UserDaoException(e);
         }
     }
-
 
     @Override
     public SessionManager getSessionManager() {

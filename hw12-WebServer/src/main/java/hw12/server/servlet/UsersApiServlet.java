@@ -3,19 +3,20 @@ package hw12.server.servlet;
 import com.google.gson.Gson;
 import hw12.core.model.User;
 import hw12.core.service.DbServiceUser;
-
-import javax.servlet.ServletOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.stream.Collectors;
-import java.util.Optional;
+import javax.servlet.ServletOutputStream;
 
 
 public class UsersApiServlet extends HttpServlet {
-
     private static final int ID_PATH_PARAM_POSITION = 1;
+    private static final int PARAM_VALUE_NOT_SET = -1;
 
     private final DbServiceUser dbServiceUser;
     private final Gson gson;
@@ -27,19 +28,28 @@ public class UsersApiServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        User user = dbServiceUser.getById(extractIdFromRequest(request)).orElse(null);
+        long userId = extractIdFromRequest(request);
+        String responseString;
+
+        if(userId == PARAM_VALUE_NOT_SET) {
+            List<User> users = dbServiceUser.getAll();
+            responseString = gson.toJson(users);
+        } else {
+            User user;
+            user = dbServiceUser.getById(userId).orElse(null);
+            responseString = gson.toJson(user);
+        }
 
         response.setContentType("application/json;charset=UTF-8");
         ServletOutputStream out = response.getOutputStream();
-        out.print(gson.toJson(user));
+        out.print(responseString);
     }
 
     private long extractIdFromRequest(HttpServletRequest request) {
         String[] path = request.getPathInfo().split("/");
-        String id = (path.length > 1)? path[ID_PATH_PARAM_POSITION]: String.valueOf(- 1);
+        String id = (path.length > 1)? path[ID_PATH_PARAM_POSITION]: String.valueOf(PARAM_VALUE_NOT_SET);
         return Long.parseLong(id);
     }
-
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {

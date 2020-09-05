@@ -1,11 +1,12 @@
 package hw12.core.service;
 
-import java.util.Optional;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import hw12.core.dao.UserDao;
 import hw12.core.model.User;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class DbServiceUserImpl implements DbServiceUser {
     private static final Logger logger = LoggerFactory.getLogger(DbServiceUserImpl.class);
@@ -31,6 +32,25 @@ public class DbServiceUserImpl implements DbServiceUser {
                 sessionManager.rollbackSession();
                 throw new DbServiceException(e);
             }
+        }
+    }
+
+    @Override
+    public List<User> getAll() {
+        try (var sessionManager = userDao.getSessionManager()) {
+            sessionManager.beginSession();
+            List<User> result = new ArrayList<>(1);
+
+            try {
+                result = userDao.findAll();
+                logger.info("object: {}", result.size());
+                return result;
+            } catch (Exception e) {
+                logger.error(e.getMessage(), e);
+                sessionManager.rollbackSession();
+            }
+
+            return result;
         }
     }
 
