@@ -1,0 +1,125 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Пользователи</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <script>
+        function getUserById() {
+            const userIdTextBox = document.getElementById('userIdTextBox');
+            const userDataContainer = document.getElementById('userDataContainer');
+            const id = userIdTextBox.value;
+
+            fetch('api/user/' + id)
+                .then(response => response.json())
+                .then(user => userDataContainer.innerHTML = JSON.stringify(user));
+        }
+
+        function getFormData() {
+            let form = document.querySelector('form');
+
+            return Array.from(form.querySelectorAll('input'))
+                .filter(element => element.name)
+                .reduce((json, element) => {
+                    json[element.name] = element.value;
+                    return json;
+                }, {});
+        }
+
+        function createUser() {
+            const RELOAD_DELAY = 1500;
+
+            fetch('api/user', {
+                method: 'POST',
+                body: JSON.stringify(getFormData())
+            })
+            .then(response => {
+                if(response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error("Ошибка сохранения пользователя");
+                }
+            })
+            .then(user => {
+                document.getElementById('userIdTextBox').value = user.id;
+                getUserById();
+
+                setTimeout((() => document.location.reload()), RELOAD_DELAY);
+            })
+            .catch(e => {
+                alert(e.toString());
+            })
+        }
+    </script>
+</head>
+
+<body>
+<h4>Получить пользователя по id</h4>
+<input type="text" id = "userIdTextBox" value="3" placeholder="Введите id пользователя">
+<button onclick="getUserById()">Получить</button>
+<pre id = "userDataContainer"></pre>
+
+<h4>Список пользователей</h4>
+<table border="1" style="width: 600px">
+    <thead>
+        <tr>
+            <th style="width: 150px">Имя</th>
+            <th style="width: 100px">Возраст</th>
+            <th style="width: 100px">Адрес</th>
+            <th style="width: 100px">Телефоны</th>
+        </tr>
+    </thead>
+    <tbody>
+    <#list users as eachUser>
+        <tr>
+            <td>${eachUser.name}</td>
+            <td>${eachUser.age}</td>
+            <td>
+                <#if eachUser.address??>
+                    ${eachUser.address.street}
+                <#else>
+                    <i>не указан</i>
+                </#if>
+            </td>
+            <td>
+                <#if eachUser.phones??>
+                    <#list eachUser.phones as phone>
+                        <p>${phone.number}</p>
+                    </#list>
+                <#else>
+                    <i>Не указан</i>
+                </#if>
+            </td>
+        </tr>
+    </#list>
+    </tbody>
+</table>
+
+<hr>
+
+<h3>Добавить пользователя</h3>
+<form>
+<table>
+    <tr>
+        <td>Имя:</td>
+        <td><input name="name"></td>
+    </tr>
+    <tr>
+        <td>Логин:</td>
+        <td><input name="login"></td>
+    </tr>
+    <tr>
+        <td>Возраст:</td>
+        <td><input name="age" type="number"></td>
+    </tr>
+    <tr>
+        <td>Пароль:</td>
+        <td><input name="password" type="password"></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td><input type="button" onclick="createUser()" value="Создать"></td>
+    </tr>
+</table>
+</form>
+
+</body>
+</html>

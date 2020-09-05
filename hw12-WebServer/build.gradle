@@ -8,17 +8,26 @@ targetCompatibility = JavaVersion.VERSION_11
 
 dependencies {
     // This dependency is used by the application.
+    implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'com.google.guava:guava'
+    implementation 'javax.json:javax.json-api'
+    implementation 'org.glassfish:javax.json'
     implementation 'com.h2database:h2:1.3.148'
+    implementation 'ch.qos.logback:logback-classic:1.2.3'
     implementation 'org.hibernate:hibernate-core:5.4.18.Final'
     implementation 'org.slf4j:slf4j-api:1.7.30'
+
+    implementation("org.eclipse.jetty:jetty-server:${Versions.jetty}")
+    implementation("org.eclipse.jetty:jetty-webapp:${Versions.jetty}")
+    implementation("org.eclipse.jetty:jetty-security:${Versions.jetty}")
+    implementation("org.freemarker:freemarker:${Versions.freemarker}")
 }
 
 shadowJar {
-    archiveBaseName.set('homework-11')
+    archiveBaseName.set('homework-12')
     archiveVersion.set('1.0')
     manifest {
-        attributes 'Main-Class': 'hw11.Main'
+        attributes 'Main-Class': 'hw12.Main'
     }
 }
 
